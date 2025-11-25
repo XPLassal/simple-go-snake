@@ -18,7 +18,7 @@ func main() {
 	GetNumberOfColumns(&numbersOfColumns)
 
 	fmt.Print("Do you want the game speed to increase as you progress? (y/n): ")
-	fmt.Scan(&gameAcceleration, "\n")
+	fmt.Scan(&gameAcceleration)
 
 	baseMilliseconds := 200 * time.Millisecond
 	ticker := time.NewTicker(baseMilliseconds)
