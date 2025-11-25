@@ -1,52 +1,39 @@
-# 🐍 Simple Snake Game in Go
+# 🐍 High-Performance Snake in Go
 
-A high-performance classic Snake game implementation written in Go using a **Clean Architecture** approach and a unique **Linked List via Map** optimization.
+[![Go Version](https://img.shields.io/badge/Go-1.23+-00ADD8?style=flat&logo=go)](https://go.dev/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-gray)](https://github.com/XPLassal/simple-snake-on-go/releases)
 
-![Preview](preview.gif)
+A modern, hyper-optimized implementation of the classic Snake game that runs directly in your terminal. Written in **Pure Go** with a focus on **Clean Architecture** and **O(1) Algorithms**.
+
+![Gameplay Preview](preview.gif)
 
 ---
 
-## ✨ Features
+## ⚡ Key Features
 
-* **High Performance (True O(1)):** The game engine uses a custom **Linked List over Hash Map** data structure. Movement and collision detection are instant regardless of the snake's size—no array shifting or iteration required!
-* **Cross-Platform:** Runs natively on **Windows**, **Linux**, and **macOS** (Intel & Apple Silicon).
-* **Dynamic Speed:** Optional "Hard Mode" where the game speeds up as you progress.
-* **Clean Code:** Written in pure Go with a modular structure (Logic separated from Rendering).
+* **🚀 True O(1) Performance:** The game engine relies on a custom **Linked List via Map** data structure. Movement and collision checks are instant, regardless of whether the snake has 10 or 10,000 segments.
+* **🎨 Zero-Allocation Rendering:** (v2.1) The rendering engine uses a pre-allocated buffer and `bufio.Writer` to eliminate GC pressure and system call overhead.
+* **📺 Flicker-Free:** Uses ANSI cursor management (`\033[H`) instead of screen clearing for smooth 60 FPS visuals without flashing.
+* **💻 Cross-Platform:** Runs natively on **Windows**, **Linux**, and **macOS** (Intel & Apple Silicon).
+* **⚙️ Dynamic Gameplay:**
+    * Customizable map size.
+    * **"Hard Mode"**: Game speed increases automatically as you score points.
 
 ---
 
 ## 🎮 How to Play
 
-You don't need to install Go to play. Just download the binary for your system!
+### Option 1: Download Binary (Recommended)
+You don't need Go installed. Just grab the executable for your OS from the [**Releases Page**](https://github.com/XPLassal/simple-snake-on-go/releases/latest).
 
-### Option 1: Download & Run (Recommended)
-
-1.  Go to the [**Releases**](https://github.com/XPLassal/simple-snake-on-go/releases) page.
-2.  Download the file for your OS:
-    * 🪟 **Windows:** `snake-windows-amd64.exe`
-    * 🐧 **Linux:** `snake-linux-amd64`
-    * 🍎 **macOS (M1/M2/M3):** `snake-macos-arm64`
-    * 🍎 **macOS (Intel):** `snake-macos-intel`
-
-3.  **Run it:**
-
-    **On Windows:**
-    Double-click the `.exe` file or run it via terminal.
-
-    **On Linux / macOS:**
-    Open terminal in the folder with the file and run:
-    ```bash
-    # Make it executable (only needed once)
-    chmod +x snake-linux-amd64  # (replace with your file name)
-
-    # Run
-    ./snake-linux-amd64
-    ```
-
----
-
+| OS | File |
+| :--- | :--- |
+| 🪟 **Windows** | `snake-windows-amd64.exe` |
+| 🐧 **Linux** | `snake-linux-amd64` |
+| 🍎 **macOS (M1/M2)** | `snake-macos-arm64` |
+| 🍎 **macOS (Intel)** | `snake-macos-intel` |
 ## 🕹 Controls
-
 | Key | Action |
 | :---: | :--- |
 | **W** | Move Up ⬆️ |
@@ -55,49 +42,9 @@ You don't need to install Go to play. Just download the binary for your system!
 | **D** | Move Right ➡️ |
 | **Q** | Quit Game |
 
----
-
-## 🏗 Technical Details
-
-For developers interested in the architecture:
-
-* **Rendering:** Console-based rendering using ANSI escape codes for colors.
-* **Data Structures:**
-    * **Body Storage:** `map[Coordinates]Coordinates`.
-    * **Logic:** This implements a **Singly Linked List** on top of a Hash Map.
-        * **Key:** Current segment coordinate.
-        * **Value:** Coordinate of the *next* segment (towards the head).
-    * **Performance:** This structure ensures **O(1)** time complexity for:
-        * **Collision checks:** Instant map lookup.
-        * **Movement:** Simply updating the pointer of the old Head and removing the old Tail key. No memory shifting (`copy`/`append`) is performed, making it extremely efficient for very long snakes.
-* **Architecture:** The project follows strict separation of concerns:
-    * `structs`: Contains all game entities (Snake, Apple) and rules.
-    * `render`: Handles drawing to the terminal.
-
----
-
-## 🛠 Build from Source
-
-If you want to modify the code or build it yourself:
-
-1.  **Install Go** (1.23 or newer).
-2.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/XPLassal/simple-snake-on-go.git
-    cd simple-snake-on-go
-    ```
-3.  **Run locally:**
-    ```bash
-    go run .
-    ```
-4.  **Build binaries (using script):**
-    ```bash
-    # Only on Linux/macOS/WSL
-    ./build.sh
-    ```
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+**Linux/macOS Note:**
+If the file doesn't run, give it permission:
+```bash
+chmod +x snake-linux-amd64
+./snake-linux-amd64
+```
