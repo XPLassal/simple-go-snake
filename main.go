@@ -49,7 +49,6 @@ func main() {
 		for {
 			char, _, err := keyboard.GetKey()
 			if err != nil {
-				fmt.Println(Red + Bold + "Error: " + err.Error() + Reset)
 				return
 			}
 			keyCh <- char
