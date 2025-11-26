@@ -22,6 +22,23 @@ A modern, hyper-optimized implementation of the classic Snake game that runs dir
 
 ---
 
+## 📊 Benchmarks
+
+The movement logic is implemented as a Linked List using a `map[Coordinates]Coordinates`. This ensures **O(1)** time complexity.
+Whether the snake has 10 segments or 10,000, the movement time remains constant.
+
+**Test Environment:** Ryzen 5 5600H, Linux
+
+| Snake Length | Time per Op |
+| :--- | :--- |
+| **Small (10)** | ~335 ns/op |
+| **Medium (1,000)** | ~283 ns/op |
+| **Huge (10,000)** | ~284 ns/op |
+
+*Data obtained via `go test -bench=. ./structs`*
+
+---
+
 ## 📥 Installation
 
 ### Arch Linux (AUR)
