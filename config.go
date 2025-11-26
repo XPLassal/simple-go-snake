@@ -29,7 +29,7 @@ func (cfg *Config) CreateConfig() {
 	fmt.Scan(&emojiInput)
 
 	hardMode := hardInput == "y"
-	useEmoji := emojiInput == "n"
+	useEmoji := !(emojiInput == "n")
 
 	err := SaveConfig(cols, hardMode, useEmoji)
 	if err != nil {

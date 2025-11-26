@@ -89,6 +89,8 @@ func main() {
 				sb.WriteString("Game stopped, bye! 🙃")
 				return
 			case 'c':
+				keyboard.Close()
+				cfg.CreateConfig()
 				sb.WriteString("Okay, restart the game please😉")
 				return
 			case 'p':
