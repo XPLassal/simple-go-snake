@@ -30,12 +30,12 @@ func (snake *Snake) GetLen() int {
 	return len(snake.body)
 }
 
-func NewSnake(n int) Snake {
+func NewSnake(n int) *Snake {
 	center := Coordinates{n / 2, n / 2}
 	s := Snake{body: make(map[Coordinates]Coordinates, n*n)}
 	s.head, s.tail = center, center
 	s.body[center] = center
-	return s
+	return &s
 }
 
 func (snake *Snake) Contains(coords Coordinates) (isHead bool, isBodyOfSnake bool) {

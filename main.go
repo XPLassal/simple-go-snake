@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -36,7 +37,7 @@ func main() {
 	}
 
 	snake := NewSnake(numbersOfColumns)
-	apple := NewApples(numbersOfColumns, &snake)
+	apple := NewApples(numbersOfColumns, snake)
 
 	if err := keyboard.Open(); err != nil {
 		fmt.Println(Red + Bold + "Error: " + err.Error() + Reset)
@@ -60,17 +61,24 @@ func main() {
 	sb.Grow(numbersOfColumns * numbersOfColumns * 20)
 	ClearConsole()
 
+	moveSnake := func() bool {
+		err := snake.Move(apple, numbersOfColumns)
+		if err != nil {
+			fmt.Println(err.Error())
+			fmt.Println(BrightGreen + Bold + "Your score: " + strconv.Itoa(snake.GetLen()) + Reset)
+			return false
+		}
+		return true
+	}
+
 	for {
 		sb.Reset()
-		RenderField(numbersOfColumns, &apple, &snake, &sb)
+		RenderField(numbersOfColumns, apple, snake, &sb)
 		writer.WriteString(sb.String())
 		writer.Flush()
 		select {
 		case <-ticker.C:
-			err := snake.Move(&apple, numbersOfColumns)
-			if err != nil {
-				fmt.Println(err.Error())
-				fmt.Println(BrightGreen+Bold+"Your score: ", snake.GetLen(), Reset)
+			if !moveSnake() {
 				return
 			}
 		case direction := <-keyCh:
@@ -79,6 +87,10 @@ func main() {
 				return
 			}
 			snake.SetDirection(direction)
+			<-ticker.C
+			if !moveSnake() {
+				return
+			}
 		}
 	}
 }

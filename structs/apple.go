@@ -31,14 +31,14 @@ func (apple *Apple) GetLen() int {
 	return len(apple.body)
 }
 
-func NewApples(numberOfColumns int, snake *Snake) Apple {
+func NewApples(numberOfColumns int, snake *Snake) *Apple {
 	cap := numberOfColumns*2 - 1
 	apple := Apple{body: make(map[Coordinates]struct{}, cap)}
 
 	for apple.GetLen() < cap {
 		apple.AddNew(numberOfColumns, snake)
 	}
-	return apple
+	return &apple
 }
 
 func (apple *Apple) EatApple(coords Coordinates, numberOfColumns int, snake *Snake) {

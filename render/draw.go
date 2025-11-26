@@ -4,38 +4,39 @@ import (
 	"strings"
 )
 
-func DrawBg(haveApple bool, isDarkBg bool, isSnake bool, isHeadOfSnake bool) string {
-	returnTemplate := func(isDark bool, s string) string {
-		if isDark {
-			return BgDarkGreen + s + Reset
-		} else {
-			return BgGreen + s + Reset
-		}
+func DrawBg(sb *strings.Builder, haveApple, isDarkBg, isSnake, isHeadOfSnake bool) {
+	if isDarkBg {
+		sb.WriteString(BgDarkGreen)
+	} else {
+		sb.WriteString(BgGreen)
 	}
-
-	var valueForReturn string
 
 	if isSnake {
 		if isHeadOfSnake {
-			valueForReturn = "🐍"
+			sb.WriteString("🐍")
 		} else {
-			valueForReturn = "🟢"
+			sb.WriteString("🟢")
 		}
 	} else if haveApple {
-		valueForReturn = "🍎"
+		sb.WriteString("🍎")
 	} else {
-		valueForReturn = "  "
+		sb.WriteString("  ")
 	}
-
-	return returnTemplate(isDarkBg, valueForReturn)
+	sb.WriteString(Reset)
 }
 
 const BgForBorder = BgWhite
 
-func DrawBordersForX() string {
-	return BgForBorder + "  " + Reset
+func DrawBordersForX(sb *strings.Builder) {
+	sb.WriteString(BgForBorder)
+	sb.WriteString("  ")
+	sb.WriteString(Reset)
 }
 
-func DrawBordersForY(size int) string {
-	return strings.Repeat(BgForBorder+"  ", size+2) + Reset
+func DrawBordersForY(sb *strings.Builder, size int) {
+	for i := 0; i < size+2; i++ {
+		sb.WriteString(BgForBorder)
+		sb.WriteString("  ")
+	}
+	sb.WriteString(Reset)
 }

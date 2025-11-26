@@ -9,22 +9,34 @@ import (
 
 func RenderField(numberOfColumns int, apple *Apple, snake *Snake, sb *strings.Builder) {
 	sb.WriteString("\033[H")
-	var isHaveApple, isHaveSnake, isHeadOfSnake, isDark bool
 
-	sb.WriteString(Bold + "Your Score: " + strconv.Itoa(snake.GetLen()) + Reset + "\n")
-	sb.WriteString(DrawBordersForY(numberOfColumns) + "\n")
+	sb.WriteString(Bold)
+	sb.WriteString("Your Score: ")
+	sb.WriteString(strconv.Itoa(snake.GetLen()))
+	sb.WriteString(Reset)
+	sb.WriteRune('\n')
 
-	for y := range numberOfColumns {
-		sb.WriteString(DrawBordersForX())
-		for x := range numberOfColumns {
+	DrawBordersForY(sb, numberOfColumns)
+	sb.WriteRune('\n')
+
+	var isDark bool
+	for y := 0; y < numberOfColumns; y++ {
+		DrawBordersForX(sb)
+
+		for x := 0; x < numberOfColumns; x++ {
 			coords := SetCoordinates(x, y)
-			isHeadOfSnake, isHaveSnake = snake.Contains(coords)
-			isHaveApple = apple.Contains(coords)
-			sb.WriteString(DrawBg(isHaveApple, isDark, isHaveSnake, isHeadOfSnake))
+			isHeadOfSnake, isHaveSnake := snake.Contains(coords)
+			isHaveApple := apple.Contains(coords)
+
+			DrawBg(sb, isHaveApple, isDark, isHaveSnake, isHeadOfSnake)
+
 			isDark = !isDark
 		}
-		sb.WriteString(DrawBordersForX() + "\n")
+
+		DrawBordersForX(sb)
+		sb.WriteRune('\n')
 	}
 
-	sb.WriteString(DrawBordersForY(numberOfColumns) + "\nTo exit, press q.\n")
+	DrawBordersForY(sb, numberOfColumns)
+	sb.WriteString("\nTo exit, press q.\n")
 }
