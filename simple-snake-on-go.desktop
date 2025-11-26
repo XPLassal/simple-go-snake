@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Name=Simple Snake Go
+Name=Snake
 Comment=High-performance terminal Snake game
 Exec=simple-snake-on-go
 Icon=simple-snake-on-go
