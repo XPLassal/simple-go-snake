@@ -76,15 +76,16 @@ func (snake *Snake) Move(apple *Apple, numbersOfColumns int) error {
 		}
 	}
 
-	snake.body[head] = newHead
-	snake.head = newHead
-	snake.body[newHead] = newHead
-
 	if apple.Contains(newHead) {
 		apple.EatApple(newHead, numbersOfColumns, snake)
 	} else {
 		snake.tail = snake.body[tail]
 		delete(snake.body, tail)
 	}
+
+	snake.body[head] = newHead
+	snake.head = newHead
+	snake.body[newHead] = newHead
+
 	return nil
 }
