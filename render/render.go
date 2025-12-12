@@ -20,10 +20,10 @@ func RenderField(numberOfColumns int, apple *Apple, snake *Snake, sb *strings.Bu
 	sb.WriteRune('\n')
 
 	var isDark bool
-	for y := 0; y < numberOfColumns; y++ {
+	for y := range numberOfColumns {
 		DrawBordersForX(sb)
 
-		for x := 0; x < numberOfColumns; x++ {
+		for x := range numberOfColumns {
 			coords := SetCoordinates(x, y)
 			isHeadOfSnake, isHaveSnake := snake.Contains(coords)
 			isHaveApple := apple.Contains(coords)
