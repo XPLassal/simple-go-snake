@@ -95,11 +95,12 @@ func main() {
 				return
 			case 'p':
 				direction = ' '
-			}
-			snake.SetDirection(direction)
-			<-ticker.C
-			if !moveSnake() {
-				return
+			case 'w', 'a', 's', 'd':
+				snake.SetDirection(direction)
+				<-ticker.C
+				if !moveSnake() {
+					return
+				}
 			}
 		}
 	}
