@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -13,7 +14,7 @@ type Config struct {
 	Columns  int  `json:"columns"`
 	HardMode bool `json:"hard_mode"`
 	UseEmoji bool `json:"use_emoji"`
-	FPS      int  `json:fps`
+	FPS      int  `json:"fps"`
 }
 
 const appDirName = "simple-go-snake"
@@ -79,7 +80,19 @@ func LoadConfig() (*Config, bool) {
 		return nil, false
 	}
 
+	if err := ValidateConfig(&cfg); err != nil {
+		fmt.Printf("Error: %v. Let's regenerate.\n", err)
+		cfg = *CreateConfig()
+	}
+
 	return &cfg, true
+}
+
+func ValidateConfig(c *Config) error {
+	if c.Columns == 0 || c.FPS == 0 {
+		return errors.New("incorrect config")
+	}
+	return nil
 }
 
 func SaveConfig(columns int, hardMode bool, useEmoji bool, fps int) error {

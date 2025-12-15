@@ -17,7 +17,7 @@ func main() {
 s:
 	cfg, exists := LoadConfig()
 
-	if !exists || cfg.FPS == 0 {
+	if !exists {
 		cfg = CreateConfig()
 	}
 
