@@ -14,15 +14,18 @@ import (
 )
 
 func main() {
+s:
 	cfg, exists := LoadConfig()
 
-	if !exists {
+	if !exists || cfg.FPS == 0 {
 		cfg = CreateConfig()
 	}
 
 	numbersOfColumns := cfg.Columns
 
-	baseMilliseconds := 200 * time.Millisecond
+	fps := 1000 / cfg.FPS
+
+	baseMilliseconds := time.Duration(fps) * time.Millisecond
 	ticker := time.NewTicker(baseMilliseconds)
 
 	if cfg.HardMode {
@@ -91,8 +94,9 @@ func main() {
 			case 'c':
 				keyboard.Close()
 				cfg = CreateConfig()
-				fmt.Println("Okay, restart the game please😉")
-				return
+				fmt.Println("Okay, restart the game😉")
+				time.Sleep(500 * time.Millisecond)
+				goto s
 			case 'p':
 				direction = ' '
 			case 'w', 'a', 's', 'd':

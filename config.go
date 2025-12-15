@@ -13,6 +13,7 @@ type Config struct {
 	Columns  int  `json:"columns"`
 	HardMode bool `json:"hard_mode"`
 	UseEmoji bool `json:"use_emoji"`
+	FPS      int  `json:fps`
 }
 
 const appDirName = "simple-go-snake"
@@ -27,10 +28,15 @@ func getConfigPath() (string, error) {
 }
 
 func CreateConfig() *Config {
-	var cols int
+	var cols, fps int
 	var hardInput, emojiInput string
 
 	GetNumberOfColumns(&cols)
+
+	for fps <= 0 {
+		fmt.Print("Set FPS number: ")
+		fmt.Scan(&fps)
+	}
 
 	fmt.Print("Hard Mode (increase speed)? (y/n): ")
 	fmt.Scan(&hardInput)
@@ -41,7 +47,7 @@ func CreateConfig() *Config {
 	hardMode := hardInput == "y"
 	useEmoji := !(emojiInput == "n")
 
-	err := SaveConfig(cols, hardMode, useEmoji)
+	err := SaveConfig(cols, hardMode, useEmoji, fps)
 	if err != nil {
 		path, _ := getConfigPath()
 		fmt.Printf("Warning: could not save config to %s: %v\n", path, err)
@@ -51,6 +57,7 @@ func CreateConfig() *Config {
 		Columns:  cols,
 		HardMode: hardMode,
 		UseEmoji: useEmoji,
+		FPS:      fps,
 	}
 }
 
@@ -75,11 +82,12 @@ func LoadConfig() (*Config, bool) {
 	return &cfg, true
 }
 
-func SaveConfig(columns int, hardMode bool, useEmoji bool) error {
+func SaveConfig(columns int, hardMode bool, useEmoji bool, fps int) error {
 	cfg := Config{
 		Columns:  columns,
 		HardMode: hardMode,
 		UseEmoji: useEmoji,
+		FPS:      fps,
 	}
 
 	path, err := getConfigPath()
