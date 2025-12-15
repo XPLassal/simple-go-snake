@@ -84,6 +84,9 @@ These settings are saved permanently in your system's user folder:
 | :--- | :--- |
 | **Columns** | Map size (e.g., 20). |
 | **FPS** | Set FPS number (10 recommended). |
+| **Allow Wall Pass** | If `y`, the snake, upon hitting a border, wraps around and reappears on the opposite side of the map (Teleport mode). If `n`, hitting a border results in Game Over. |
+| **Multi Apple Mode** | If `y`, several apples (food items) can be present on the map simultaneously. If `n`, only one apple will spawn at a time (Classic mode). |
+| **FPS** | Set FPS number (10 recommended). |
 | **Hard Mode** | If `y`, the game speeds up as your score increases. |
 | **Use Emojis** | `y` for beautiful graphics. `n` for ASCII - recommended for SSH or older terminals. |
 
