@@ -83,6 +83,7 @@ These settings are saved permanently in your system's user folder:
 | Setting | Description |
 | :--- | :--- |
 | **Columns** | Map size (e.g., 20). |
+| **FPS** | Set FPS number (10 recommended). |
 | **Hard Mode** | If `y`, the game speeds up as your score increases. |
 | **Use Emojis** | `y` for beautiful graphics. `n` for ASCII - recommended for SSH or older terminals. |
 

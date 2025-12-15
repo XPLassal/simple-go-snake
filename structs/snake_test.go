@@ -7,7 +7,7 @@ import (
 func growSnake(s *Snake, length int) {
 	current := s.head
 	for i := 0; i < length; i++ {
-		next := Coordinates{x: i + 1000, y: i + 1000}
+		next := Coordinates{x: i + 1}
 		s.body[current] = next
 		current = next
 	}
