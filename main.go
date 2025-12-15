@@ -41,7 +41,7 @@ s:
 	}
 
 	snake := NewSnake(numbersOfColumns)
-	apple := NewApples(numbersOfColumns, snake)
+	apple := NewApples(numbersOfColumns, snake, cfg.MultiAppleMode)
 
 	if err := keyboard.Open(); err != nil {
 		fmt.Println(Red + Bold + "Error: " + err.Error() + Reset)
@@ -67,7 +67,7 @@ s:
 	ClearConsole()
 
 	moveSnake := func() bool {
-		err := snake.Move(apple, numbersOfColumns)
+		err := snake.Move(apple, numbersOfColumns, cfg.AllowWallPass)
 		if err != nil {
 			fmt.Println(err.Error())
 			fmt.Println(BrightGreen + Bold + "Your score: " + strconv.Itoa(snake.GetLen()) + Reset)
@@ -98,7 +98,7 @@ s:
 				time.Sleep(500 * time.Millisecond)
 				goto s
 			case 'p':
-				direction = ' '
+				snake.SetDirection(' ')
 			case 'w', 'a', 's', 'd':
 				snake.SetDirection(direction)
 				<-ticker.C

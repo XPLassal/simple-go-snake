@@ -11,9 +11,11 @@ func RenderField(numberOfColumns int, apple *Apple, snake *Snake, sb *strings.Bu
 	sb.WriteString("\033[H")
 
 	sb.WriteString(Bold)
+	sb.WriteString(BrightGreen)
 	sb.WriteString("Your Score: ")
 	sb.WriteString(strconv.Itoa(snake.GetLen()))
 	sb.WriteString(Reset)
+	// sb.WriteString(snake.DebugSnake(numberOfColumns))
 	sb.WriteRune('\n')
 
 	DrawBordersForY(sb, numberOfColumns)
@@ -40,9 +42,6 @@ func RenderField(numberOfColumns int, apple *Apple, snake *Snake, sb *strings.Bu
 	DrawBordersForY(sb, numberOfColumns)
 	sb.WriteRune('\n')
 	keys := []string{"q: Exit", "c: Config", "p: Pause"}
-	for _, v := range keys {
-		sb.WriteString(v)
-		sb.WriteByte(' ')
-	}
+	sb.WriteString(strings.Join(keys, " "))
 	sb.WriteRune('\n')
 }

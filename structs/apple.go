@@ -31,10 +31,13 @@ func (apple *Apple) GetLen() int {
 	return len(apple.body)
 }
 
-func NewApples(numberOfColumns int, snake *Snake) *Apple {
+func NewApples(numberOfColumns int, snake *Snake, multiAppleMode bool) *Apple {
 	const appleDensity = 0.12
 	totalSpace := numberOfColumns*numberOfColumns - 1
-	maxApples := int(float64(totalSpace) * appleDensity)
+	maxApples := 1
+	if multiAppleMode {
+		maxApples = int(float64(totalSpace) * appleDensity)
+	}
 	apple := Apple{body: make(map[Coordinates]struct{}, maxApples)}
 
 	for apple.GetLen() < maxApples {

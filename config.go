@@ -11,10 +11,12 @@ import (
 )
 
 type Config struct {
-	Columns  int  `json:"columns"`
-	HardMode bool `json:"hard_mode"`
-	UseEmoji bool `json:"use_emoji"`
-	FPS      int  `json:"fps"`
+	Columns        int  `json:"columns"`
+	HardMode       bool `json:"hard_mode"`
+	UseEmoji       bool `json:"use_emoji"`
+	FPS            int  `json:"fps"`
+	AllowWallPass  bool `json:"allow_wall_pass"`
+	MultiAppleMode bool `json:"multi_apple_mode"`
 }
 
 const appDirName = "simple-go-snake"
@@ -28,37 +30,46 @@ func getConfigPath() (string, error) {
 	return filepath.Join(configDir, appDirName, configFileName), nil
 }
 
+func askQuation[T any](s string, answer *T) {
+	fmt.Print(s)
+	fmt.Scan(answer)
+}
+
 func CreateConfig() *Config {
 	var cols, fps int
-	var hardInput, emojiInput string
+	var answer string
 
 	GetNumberOfColumns(&cols)
 
 	for fps <= 0 {
-		fmt.Print("Set FPS number: ")
-		fmt.Scan(&fps)
+		askQuation("Set FPS number (10 recommended): ", &fps)
 	}
 
-	fmt.Print("Hard Mode (increase speed)? (y/n): ")
-	fmt.Scan(&hardInput)
+	askQuation("Allow the snake to pass through walls? (y/n): ", &answer)
+	allowWallPass := answer == "y"
 
-	fmt.Print("Use Emojis (set 'n' for SSH/Linux)? (y/n): ")
-	fmt.Scan(&emojiInput)
+	askQuation("Allow multiple apples to spawn? (y/n): ", &answer)
+	multiAppleMode := answer == "y"
 
-	hardMode := hardInput == "y"
-	useEmoji := !(emojiInput == "n")
+	askQuation("Hard Mode (increase speed)? (y/n): ", &answer)
+	hardMode := answer == "y"
 
-	err := SaveConfig(cols, hardMode, useEmoji, fps)
+	askQuation("Use Emojis (set 'n' for SSH/Linux)? (y/n): ", &answer)
+	useEmoji := !(answer == "n")
+
+	err := SaveConfig(cols, hardMode, useEmoji, fps, allowWallPass, multiAppleMode)
 	if err != nil {
 		path, _ := getConfigPath()
 		fmt.Printf("Warning: could not save config to %s: %v\n", path, err)
 	}
 
 	return &Config{
-		Columns:  cols,
-		HardMode: hardMode,
-		UseEmoji: useEmoji,
-		FPS:      fps,
+		Columns:        cols,
+		HardMode:       hardMode,
+		UseEmoji:       useEmoji,
+		FPS:            fps,
+		AllowWallPass:  allowWallPass,
+		MultiAppleMode: multiAppleMode,
 	}
 }
 
@@ -95,12 +106,14 @@ func ValidateConfig(c *Config) error {
 	return nil
 }
 
-func SaveConfig(columns int, hardMode bool, useEmoji bool, fps int) error {
+func SaveConfig(columns int, hardMode bool, useEmoji bool, fps int, allowWallPass bool, multiAppleMode bool) error {
 	cfg := Config{
-		Columns:  columns,
-		HardMode: hardMode,
-		UseEmoji: useEmoji,
-		FPS:      fps,
+		Columns:        columns,
+		HardMode:       hardMode,
+		UseEmoji:       useEmoji,
+		FPS:            fps,
+		AllowWallPass:  allowWallPass,
+		MultiAppleMode: multiAppleMode,
 	}
 
 	path, err := getConfigPath()

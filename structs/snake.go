@@ -1,6 +1,10 @@
 package structs
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+	"math"
+)
 
 type Snake struct {
 	head      Coordinates
@@ -47,7 +51,11 @@ func (snake *Snake) Contains(coords Coordinates) (isHead bool, isBodyOfSnake boo
 	return false, ok
 }
 
-func (snake *Snake) Move(apple *Apple, numbersOfColumns int) error {
+func (snake *Snake) DebugSnake(numberOfColumns int) string {
+	return fmt.Sprintf("\nHead: %v\nTail: %v\nBody: %v\nNumberOfCOlumns: %d", snake.head, snake.tail, snake.body, numberOfColumns)
+}
+
+func (snake *Snake) Move(apple *Apple, numbersOfColumns int, allowWallPass bool) error {
 	var dx, dy int
 	switch snake.GetDirection() {
 	case "w":
@@ -66,8 +74,18 @@ func (snake *Snake) Move(apple *Apple, numbersOfColumns int) error {
 	tail := snake.tail
 	newHead := Coordinates{head.x + dx, head.y + dy}
 
-	if newHead.x < 0 || newHead.y < 0 || newHead.x >= numbersOfColumns || newHead.y >= numbersOfColumns {
-		return errors.New("The snake went out of bounds :(")
+	if allowWallPass {
+		if newHead.x < 0 || newHead.x >= numbersOfColumns {
+			newHead.x = numbersOfColumns - int(math.Abs(float64(newHead.x)))
+		}
+
+		if newHead.y < 0 || newHead.y >= numbersOfColumns {
+			newHead.y = numbersOfColumns - int(math.Abs(float64(newHead.y)))
+		}
+	} else {
+		if newHead.x < 0 || newHead.y < 0 || newHead.x >= numbersOfColumns || newHead.y >= numbersOfColumns {
+			return errors.New("The snake went out of bounds :(")
+		}
 	}
 
 	if _, exists := snake.Contains(newHead); exists {

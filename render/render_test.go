@@ -10,7 +10,7 @@ import (
 func BenchmarkRender(b *testing.B) {
 	n := 20
 	snake := structs.NewSnake(n)
-	apple := structs.NewApples(n, snake)
+	apple := structs.NewApples(n, snake, true)
 
 	var sb strings.Builder
 	b.ResetTimer()
