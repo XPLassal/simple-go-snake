@@ -113,7 +113,7 @@ s:
 				snake.SetDirection(direction)
 				<-ticker.C
 				if !moveSnake() {
-					goto s
+					main()
 				}
 			}
 		}
