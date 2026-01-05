@@ -81,6 +81,7 @@ s:
 		if err != nil {
 			fmt.Println(err.Error())
 			fmt.Println(BrightGreen + Bold + "Your score: " + strconv.Itoa(snake.GetLen()) + Reset)
+			fmt.Println("Restart...")
 			return false
 		}
 		return true
@@ -113,7 +114,9 @@ s:
 				snake.SetDirection(direction)
 				<-ticker.C
 				if !moveSnake() {
-					main()
+					time.Sleep(1 * time.Second)
+					keyboard.Close()
+					goto s
 				}
 			}
 		}
