@@ -52,10 +52,20 @@ s:
 	keyCh := make(chan rune)
 	go func() {
 		for {
-			char, _, err := keyboard.GetKey()
+			char, key, err := keyboard.GetKey()
 			if err != nil {
 				close(keyCh)
 				return
+			}
+			switch key {
+			case keyboard.KeyArrowUp:
+				char = 'w'
+			case keyboard.KeyArrowLeft:
+				char = 'a'
+			case keyboard.KeyArrowDown:
+				char = 's'
+			case keyboard.KeyArrowRight:
+				char = 'd'
 			}
 			keyCh <- char
 		}
@@ -103,7 +113,7 @@ s:
 				snake.SetDirection(direction)
 				<-ticker.C
 				if !moveSnake() {
-					return
+					goto s
 				}
 			}
 		}
