@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
@@ -27,6 +26,7 @@ s:
 
 	baseMilliseconds := time.Duration(fps) * time.Millisecond
 	ticker := time.NewTicker(baseMilliseconds)
+	defer ticker.Stop()
 
 	if cfg.HardMode {
 		go func() {
@@ -79,9 +79,9 @@ s:
 	moveSnake := func() bool {
 		err := snake.Move(apple, numbersOfColumns, cfg.AllowWallPass)
 		if err != nil {
-			fmt.Println(err.Error())
-			fmt.Println(BrightGreen + Bold + "Your score: " + strconv.Itoa(snake.GetLen()) + Reset)
-			fmt.Println("Restart...")
+			fmt.Println(err.Error() +
+			Green + Bold + "\n" +
+			"Press any key to restart..." + Reset)
 			return false
 		}
 		return true
@@ -95,17 +95,18 @@ s:
 		select {
 		case <-ticker.C:
 			if !moveSnake() {
-				return
+				time.Sleep(1 * time.Second)
+				keyboard.Close()
+				goto s
 			}
 		case direction := <-keyCh:
 			switch direction {
 			case 'q':
-				sb.WriteString("Game stopped, bye! 🙃")
+				fmt.Println("Game stopped, bye! 🙃")
 				return
 			case 'c':
 				keyboard.Close()
 				cfg = CreateConfig()
-				fmt.Println("Okay, restart the game😉")
 				time.Sleep(500 * time.Millisecond)
 				goto s
 			case 'p':
